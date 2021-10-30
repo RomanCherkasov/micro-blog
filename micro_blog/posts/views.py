@@ -119,7 +119,7 @@ def add_comment(request, username, post_id):
 
 @login_required
 def new_post(request):
-    if request.method = 'POST':
+    if request.method == 'POST':
         form = PostForm(request.POST, files=request.FILES or None)
         if form.is_valid():
             post = form.save(commit=False)
