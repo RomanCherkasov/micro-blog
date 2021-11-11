@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block header %}Об авторе проекта{% endblock %}
+{% block content %}
+{% load user_filters %}
+  <main role="main" class="container">
+    <div class="row">
+      <!-- Левый вспомогательный блок -->
+      <div class="col-md-3 mb-3 mt-1">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <div class="h3">
+                  Об авторе
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="h6 text-muted">
+                  Роман. 24 года по паспорту.<br> 18 по ощущениям.
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Тело страницы -->
+      <div class="col-md-9">
+        <div class="card-body shadow-sm">
+          <div class="card-text">
+            <p>Привет. Меня зовут Роман. Живу в Новосибирске.</p>
+            <p>Люблю играть в настольные игры на ковре, активный отдых не выходя
+            из дома, рисовать масляными красками на iPad и кошку</p>
+            <p>Женат. Пятеро детей. Большое хозяйство: 3 коровы, 10 свиней, 30 гусей, 40 кур,
+            огромный огород с картошкой и другими овощами... Но это не про меня, а про
+            моего деда.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}
