@@ -1,0 +1,22 @@
+{% if user.is_authenticated %}
+<nav class="navbar rounded mb-2 shadow" style="background-color: #0b292f;">
+  <div class="row">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link ml-2 rounded shadow-sm"{% if index %}style="background-color: #C5D0E6;"
+        {% elif not index %} style="background-color: #043a4b;"
+        {% endif %} href="{% url 'index' %}">
+          Все авторы
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link ml-2 rounded shadow-sm"{% if follow %}style="background-color: #C5D0E6;"
+        {% elif not follow %} style="background-color: #043a4b;"
+        {% endif %}href="{% url 'follow_index' %}">
+          Избранные авторы
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+{% endif %}

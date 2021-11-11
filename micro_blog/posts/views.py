@@ -55,3 +55,15 @@ def _read_post(request, post_id):
         'follow_count': follow_count,
         'self_follow_count': self_follow_count,        
     }
+
+def index(request):
+    page = _get_posts(request, {})
+
+    return render(
+        request,
+        'index.html',
+        {
+            'page': page,
+            'page_number': page.number
+        }
+    )
