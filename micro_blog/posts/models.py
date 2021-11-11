@@ -34,3 +34,22 @@ class Post(models.Model):
         # переопределение строкового метода для удобства тестирования
         # выводит только первые 20 символов текста статьи
         return self.text[:20]
+
+class Comment(models.Model):
+    post = models.ForeignKey(
+        'Post',
+        on_delete=models.CASCADE,
+        related_name='comments',
+    )
+
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+    
+    text = models.TextField()
+    created = models.DateTimeField('Date published', auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.text
