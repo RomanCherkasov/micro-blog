@@ -1,6 +1,7 @@
 from typing import Text
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models import constraints
 from django.db.models.fields.files import ImageField
 
 User = get_user_model()
@@ -53,3 +54,24 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return self.text
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='follower',
+    )
+    
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='following',
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user','author'],
+                name='unique_follow'
+            )
+        ]
