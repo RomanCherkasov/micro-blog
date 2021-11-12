@@ -185,3 +185,61 @@ def post_edit(requset, username, post_id):
             'is_edit': True,
         }
     )
+
+def page_not_found(request, exception):
+    return render(
+        request,
+        "misc/404.html",
+        status=404
+    )
+
+
+def server_error(request):
+    return render(
+        request,
+        "misc/500.html",
+        status=500
+    )
+
+@login_required
+def follow_index(request):
+    
+    page = _get_posts(
+        request,
+        {'author__following__user': request.user}
+    )
+    
+    return render(
+        request,
+        'follow.html',
+        {
+            'page': page,
+            'page_number': page.number,
+        }
+    )
+
+@login_required
+def profile_follow(request, username):
+    if request.user.username == username:
+        return redirect('profile', username)
+    user = get_object_or_404(User, username=username)
+
+    check_follow = Follow.objects.filter(
+        user=request.user,
+        author=user
+    ).exists()
+
+    if not check_follow:
+        follow = Follow(
+            user=request.user,
+            author=user,
+        )
+        follow.save()
+    return redirect('profile', user.username)
+
+@login_required
+def profile_unfollow(request, username):
+    user = get_object_or_404(User, username=username)
+    unfollow = get_object_or_404(Follow, user=request.user, author=user)
+    unfollow.delete()
+    return redirect('profile', user.username)
