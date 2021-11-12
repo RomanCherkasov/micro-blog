@@ -68,7 +68,7 @@ def index(request):
         }
     )
 
-def group_post(request, slug):
+def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     page = _get_posts(request, {'group': group})
     return render (
