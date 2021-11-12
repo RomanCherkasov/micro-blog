@@ -105,7 +105,7 @@ def profile(request, username):
         }
     )
 
-def post_view(request, post_id):
+def post_view(request, username, post_id):
     context = _read_post(request, post_id)
 
     return render(
@@ -174,7 +174,7 @@ def post_edit(requset, username, post_id):
 
     if form.is_valid():
         form.save()
-        return redirect('psot', username, post_id)
+        return redirect('post', username, post_id)
 
     return render(
         requset,

@@ -2,7 +2,7 @@ from typing import Text
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models import constraints
-from django.db.models.fields.files import ImageField
+from sorl.thumbnail import ImageField
 
 User = get_user_model()
 
@@ -22,7 +22,7 @@ class Post(models.Model):
         null=True,
     )
     
-    image = models.ImageField(
+    image = ImageField(
         upload_to='posts/',
         blank=True,
         null=True,

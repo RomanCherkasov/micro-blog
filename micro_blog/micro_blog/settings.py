@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'posts',
     'users',
     'about',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +54,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'micro_blog.urls'
-
+THUMBNAIL_FORCE_OVERWRITE = True
 TEMPLATES_DIR = BASE_DIR / 'templates'
 TEMPLATES = [
     {
