@@ -67,3 +67,121 @@ def index(request):
             'page_number': page.number
         }
     )
+
+def group_post(request, slug):
+    group = get_object_or_404(Group, slug=slug)
+    page = _get_posts(request, {'group': group})
+    return render (
+        request,
+        'group.html',
+        {
+            'group': group,
+            'page': page
+        }
+    )
+
+def profile(request, username):
+    author, count_post, follow_count, self_follow_count = _read_author(username)
+    page = _get_posts(request, {'author': author})
+    check_follow = False
+
+    if request.user.is_authenticated:
+        check_follow = Follow.objects.filter(
+            user=request.user,
+            author=author,
+        ).exists()
+
+    return render(
+        request,
+        'profile.html',
+        {
+            'page': page,
+            'author': author,
+            'profile': author,
+            'count_post': count_post,
+            'following': check_follow,
+            'follow_count': follow_count,
+            'self_follow_count': self_follow_count,
+        }
+    )
+
+def post_view(request, post_id):
+    context = _read_post(request, post_id)
+
+    return render(
+        request,
+        'post.html',
+        context
+    )
+
+@login_required
+def add_comment(request, username, post_id):
+    context = _read_post(request, post_id)
+
+    if context['form'].is_valid():
+        comment = context['form'].save(commit=False)
+        comment.author = request.user
+        comment.post = context['post']
+        context['form'].save()
+        return redirect('post', username, post_id)
+    return render(
+        request,
+        'post.html',
+        context
+    )
+
+@login_required
+def new_post(request):
+    if request.method == 'POST':
+        form = PostForm(
+            request.POST,
+            files=request.FILES or None
+        )
+
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('index')
+    
+    form = PostForm()
+
+    return render(
+        request,
+        'create_and_edit_post.html',
+        {
+            'form': form,
+            'is_edit': False,
+        }
+    )
+
+@login_required
+def post_edit(requset, username, post_id):
+    this_post = get_object_or_404(
+        Post,
+        pk=post_id,
+        author__username=username
+    )
+
+    if this_post.author != requset.user:
+        return redirect ('post', username, post_id)
+
+    form = PostForm(
+        requset.POST or None,
+        files=requset.FILES or None,
+        instance=this_post,
+    )
+
+    if form.is_valid():
+        form.save()
+        return redirect('psot', username, post_id)
+
+    return render(
+        requset,
+        'create_and_edit_post.html',
+        {
+            'form': form,
+            'Post': this_post,
+            'is_edit': True,
+        }
+    )
